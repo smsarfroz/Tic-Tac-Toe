@@ -99,6 +99,74 @@ function gameController(playerOneName = "player1",playerTwoName ="player2") {
 
     let boardHere = board.getBoard();
 
+    const checkWin = () => {
+        //horizontal 
+        //iterate first column
+
+        for(let i=0;i<3;++i){
+            const typeHere = boardHere[i][j].getValue();
+            let timesRepeated = 0;
+            for(let j=0;j<3; ++j) {
+                if(boardHere[i][j].getValue() === typeHere) {
+                    timesRepeated++;
+                }
+            }
+            if(timesRepeated === 4 && typeHere!=''){
+                return true;
+            }
+        }
+
+        //vertical
+        //iterate first row
+
+        for(let j=0;j<3;++j) {
+            const typeHere = boardHere[i][j].getValue();
+            let timesRepeated = 0;
+            for(let i=0;i<3;++i) {
+                if(boardHere[i][j].getValue() === typeHere) {
+                    timesRepeated++;
+                }
+            }
+
+            if(timesRepeated === 4 && typeHere!='') {
+                return true;
+            }
+        }
+
+        //diagonals 
+
+        {
+            if(boardHere[0][0].getValue() === boardHere[1][1].getValue()){
+                if(boardHere[1][1].getValue() === boardHere[2][2].getValue() && boardHere[2][2].getValue()!=''){
+                    return true;
+                }
+            }
+        }
+
+        {
+            if(boardHere[2][0].getValue() === boardHere[1][1].getValue()){
+                if(boardHere[1][1].getValue() === boardHere[0][2].getValue() && boardHere[0][2].getValue()!=''){
+                    return true;
+                }
+            }
+        }
+        return false;
+    };
+
+    const playRound = (row, column) => {
+        board.placeToken(row, column, getActivePlayer().token);
+
+        if(checkWin()) {
+            console.log(`${getActivePlayer().name} has won the round.`);
+        }else {
+
+        }
+
+        switchPlayerTurn();
+    };
+    // printNewRound();
+
 }
 
 const game = gameController();
+
