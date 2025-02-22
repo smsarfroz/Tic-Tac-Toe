@@ -70,7 +70,10 @@ function Cell() {
     return {addToken, getValue};
 }   
 
-function gameController(playerOneName = "player1",playerTwoName ="player2") {
+function gameController(
+    playerOneName = player1Name.value,
+    playerTwoName = player2Name.value
+) {
     const board = Gameboard();
 
     const players = [
@@ -194,9 +197,35 @@ function gameController(playerOneName = "player1",playerTwoName ="player2") {
     return { playRound, printNewRound, getBoard: board.getBoard};
 }
 
-function screenController() {
-
+function ScreenController() {
+    //what things do I have to do here ? 
+    //I have to keep showing the which person's turn it is
+    //and then what ? 
+    //is screenController totally separate from the need of css and board clickable buttons ? 
+    //what to do ? 
+    const game = gameController();
+    
 }
 
-const game = gameController();
+
+const player1Name = document.getElementById("player_1");
+const player2Name = document.getElementById("player_2");
+const board = document.querySelector(".board");
+
+function takeDetailsStartGame() {
+  board.style.display = 'none';
+
+  const button = document.getElementById("play");
+  button.addEventListener('click',(e) =>{
+    e.preventDefault();
+    
+    const mydialog = document.querySelector("dialog");
+    mydialog.close();
+
+    ScreenController();
+    board.style.display = 'grid';
+  });
+}
+
+takeDetailsStartGame();
 

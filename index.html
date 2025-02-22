@@ -6,10 +6,30 @@
     <title>Document</title>
 </head>
 <body>
+    <dialog open>
+        <form action="" method="get">
+            <div>
+                <label for="player_1"> Player 1 name : </label>
+                <input type="text" id="player_1" name="player_1">
+            </div>
+
+            <div>
+                <label for="player_2"> Player 2 name : </label>
+                <input type="text" id="player_2" name="player_2">
+            </div>
+
+            <button id="play">Play</button>
+        </form>
+    </dialog>
     <div class="container">
         <h1 class="turn"></h1>
         <div class="board"></div>
     </div>
+
+    <dialog id="winner">
+        <div class="winnerSection"></div>
+        <button class="playAgain">Play Again</button>
+    </dialog>
     <script src="./script.js"></script>
 </body>
 </html>
