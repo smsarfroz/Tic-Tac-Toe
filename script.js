@@ -35,7 +35,7 @@ function Gameboard(){
     }
 
     const getBoard = () => {
-        board;
+        return board;
     };
 
     const resetBoard = () => {
@@ -64,7 +64,7 @@ function Cell() {
     };
 
     const getValue = () => {
-        value;
+        return value;
     };
 
     return {addToken, getValue};
@@ -90,9 +90,9 @@ function gameController(playerOneName = "player1",playerTwoName ="player2") {
         activePlayer = (activePlayer === players[0] ? players[1]: players[0]);
     };
     const getActivePlayer = () => {
-        activePlayer;
+        return activePlayer;
     };
-
+    
     const printNewRound = () => {
         board.printBoard();
     };
@@ -102,16 +102,15 @@ function gameController(playerOneName = "player1",playerTwoName ="player2") {
     const checkWin = () => {
         //horizontal 
         //iterate first column
-
         for(let i=0;i<3;++i){
-            const typeHere = boardHere[i][j].getValue();
+            const typeHere = boardHere[i][0].getValue();
             let timesRepeated = 0;
             for(let j=0;j<3; ++j) {
                 if(boardHere[i][j].getValue() === typeHere) {
                     timesRepeated++;
                 }
             }
-            if(timesRepeated === 4 && typeHere!=''){
+            if(timesRepeated === 3 && typeHere!=''){
                 return true;
             }
         }
@@ -120,7 +119,7 @@ function gameController(playerOneName = "player1",playerTwoName ="player2") {
         //iterate first row
 
         for(let j=0;j<3;++j) {
-            const typeHere = boardHere[i][j].getValue();
+            const typeHere = boardHere[0][j].getValue();
             let timesRepeated = 0;
             for(let i=0;i<3;++i) {
                 if(boardHere[i][j].getValue() === typeHere) {
@@ -128,7 +127,7 @@ function gameController(playerOneName = "player1",playerTwoName ="player2") {
                 }
             }
 
-            if(timesRepeated === 4 && typeHere!='') {
+            if(timesRepeated === 3 && typeHere!='') {
                 return true;
             }
         }
@@ -154,17 +153,48 @@ function gameController(playerOneName = "player1",playerTwoName ="player2") {
     };
 
     const playRound = (row, column) => {
+        console.log(`row = ${row}, column =${column}`);
+        console.log('activeplayer');
+        console.log(getActivePlayer());
         board.placeToken(row, column, getActivePlayer().token);
 
         if(checkWin()) {
             console.log(`${getActivePlayer().name} has won the round.`);
         }else {
+            //check for tie condition
 
+            let emptyCells = 0;
+            for(let i=0;i<3;++i){
+                for(let j=0;j<3;++j){
+                    if(boardHere[i][j].getValue() == ''){
+                        emptyCells++;
+                    }
+                }
+            }   
+            if(emptyCells === 0) {
+                console.log("It's a tie!");
+            }
         }
 
         switchPlayerTurn();
     };
+
+    playRound(0,0);
+    playRound(0,1);
+    playRound(0,2);
+
+    playRound(1,1);
+    playRound(1,0);
+    playRound(1,2);
+
+    playRound(2,1);
+    playRound(2,0);
+    playRound(2,2);
     // printNewRound();
+    return { playRound, printNewRound, getBoard: board.getBoard};
+}
+
+function screenController() {
 
 }
 
