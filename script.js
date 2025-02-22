@@ -163,9 +163,27 @@ function gameController(
 
         if(checkWin()) {
             console.log(`${getActivePlayer().name} has won the round.`);
+            const winnerMessage = document.querySelector(".winnerSection");
+            winnerMessage.textContent = `${getActivePlayer().name} has won this round.`
+
+            const button = document.querySelector(".playAgain");
+            const winnerDialogue = document.querySelector("#winner");
+            winnerDialogue.showModal();
+
+            const handlePlayAgain = (e) => {
+                e.preventDefault();
+                board.resetBoard();
+                
+                winnerDialogue.close();
+            }
+
+            button.removeEventListener('click', handlePlayAgain);
+            button.addEventListener('click', handlePlayAgain);
         }else {
             //check for tie condition
 
+            const winnerDialogue = document.querySelector('#winner');
+            
             let emptyCells = 0;
             for(let i=0;i<3;++i){
                 for(let j=0;j<3;++j){
@@ -182,17 +200,17 @@ function gameController(
         switchPlayerTurn();
     };
 
-    playRound(0,0);
-    playRound(0,1);
-    playRound(0,2);
+    // playRound(0,0);
+    // playRound(0,1);
+    // playRound(0,2);
 
-    playRound(1,1);
-    playRound(1,0);
-    playRound(1,2);
+    // playRound(1,1);
+    // playRound(1,0);
+    // playRound(1,2);
 
-    playRound(2,1);
-    playRound(2,0);
-    playRound(2,2);
+    // playRound(2,1);
+    // playRound(2,0);
+    // playRound(2,2);
     // printNewRound();
     return { playRound, printNewRound, getBoard: board.getBoard};
 }
@@ -204,7 +222,20 @@ function ScreenController() {
     //is screenController totally separate from the need of css and board clickable buttons ? 
     //what to do ? 
     const game = gameController();
-    
+    const playerTurnDiv = document.querySelector('.turn');
+    const boardDiv = document.querySelector('.board');
+
+    function clickHandlerBoard(e) {
+        const selectedRow = e.target.dataset.row;
+        const selectedColumn = e.target.dataset.column;
+
+        if(!selectedColumn || !selectedRow) {
+            return;
+        }
+
+        game.playRound(selectedRow,selectedColumn);
+    };  
+    boardDiv.addEventListener('click', clickHandlerBoard); 
 }
 
 
@@ -213,7 +244,7 @@ const player2Name = document.getElementById("player_2");
 const board = document.querySelector(".board");
 
 function takeDetailsStartGame() {
-  board.style.display = 'none';
+  b     oard.style.display = 'none';
 
   const button = document.getElementById("play");
   button.addEventListener('click',(e) =>{
