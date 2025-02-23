@@ -212,7 +212,7 @@ function gameController(
     // playRound(2,0);
     // playRound(2,2);
     // printNewRound();
-    return { playRound, printNewRound, getBoard: board.getBoard};
+    return { playRound, printNewRound, getBoard: board.getBoard, getActivePlayer};
 }
 
 function ScreenController() {
@@ -222,17 +222,63 @@ function ScreenController() {
     //is screenController totally separate from the need of css and board clickable buttons ? 
     //what to do ? 
     const game = gameController();
+    console.log("game");
+    console.log(game);
     const playerTurnDiv = document.querySelector('.turn');
     const boardDiv = document.querySelector('.board');
-
+    
     const updateScreen = () => {
-        
+
+        boardDiv.textContent = "";
+
+        const board = game.getBoard();
+        const activePlayer = game.getActivePlayer();
+
+        playerTurnDiv.textContent = `${activePlayer.name}'s turn...`;
+
+        board.forEach((row,index1) => {
+            row.forEach((cell, index2) => {
+                //what is (cell,index) ?
+                //index was only set for column in previous project
+                //but here we have both row and column, so what to do
+                //users gives those input
+                //were they stored in the cell ? yes they were. where?
+                //why did we set column as index ?
+                //actually it can only be (cell,index) and nothing else
+                //like (cell,row,column) is not possible
+                //what is index here ? 
+                const cellButton = document.createElement("button");
+                cellButton.classList.add("cell");
+                //wouldn't we set the cell's dimension or something ? 
+                //or just store those values of dimension somewhere in it?
+                //but how is that an indeal cell ?
+                //is it necessary to store values of column and row in the cell ? 
+
+                cellButton.dataset.row = index1;
+                cellButton.dataset.column = index2;
+                cellButton.textContent = cell.getValue();
+                boardDiv.appendChild(cellButton);                
+            });
+        });
     };
     function clickHandlerBoard(e) {
         const selectedRow = e.target.dataset.row;
         const selectedColumn = e.target.dataset.column;
 
-        if(!selectedColumn || !selectedRow) {
+        console.log(`button was clicked on ${selectedRow} , ${selectedColumn}`);
+        //why are selectedRow, selectedColumn undefined now ? 
+        //cuz maybe I didn't set their values correctly.
+
+        //what if this cell has already been chosen before?
+        //what to do ?
+        //why is this cell value not accessible ? 
+
+        console.log(board);
+        // console.log(board[selectedRow][selectedColumn]);
+        // console.log(board[selectedRow][selectedColumn].getValue());
+        // console.log(`cell values for ${selectedRow},${selectedColumn} is ${board[selectedRow][selectedColumn].getValue()}`);
+        //|| board[selectedRow][selectedColumn].getValue()!=0
+        if(!selectedColumn || !selectedRow ) {
             return;
         }
 
