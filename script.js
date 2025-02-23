@@ -173,7 +173,7 @@ function gameController(
             const handlePlayAgain = (e) => {
                 e.preventDefault();
                 board.resetBoard();
-                
+                ScreenController();
                 winnerDialogue.close();
             }
 
@@ -183,7 +183,7 @@ function gameController(
             //check for tie condition
 
             const winnerDialogue = document.querySelector('#winner');
-            
+
             let emptyCells = 0;
             for(let i=0;i<3;++i){
                 for(let j=0;j<3;++j){
@@ -225,6 +225,9 @@ function ScreenController() {
     const playerTurnDiv = document.querySelector('.turn');
     const boardDiv = document.querySelector('.board');
 
+    const updateScreen = () => {
+        
+    };
     function clickHandlerBoard(e) {
         const selectedRow = e.target.dataset.row;
         const selectedColumn = e.target.dataset.column;
@@ -234,17 +237,19 @@ function ScreenController() {
         }
 
         game.playRound(selectedRow,selectedColumn);
+        updateScreen();
     };  
     boardDiv.addEventListener('click', clickHandlerBoard); 
-}
 
+    updateScreen();
+}
 
 const player1Name = document.getElementById("player_1");
 const player2Name = document.getElementById("player_2");
 const board = document.querySelector(".board");
 
 function takeDetailsStartGame() {
-  b     oard.style.display = 'none';
+  board.style.display = 'none';
 
   const button = document.getElementById("play");
   button.addEventListener('click',(e) =>{
