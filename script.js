@@ -58,7 +58,7 @@ function Gameboard(){
 }
 
 function Cell() {
-    let value = 0;
+    let value = '';
     const addToken = (player) => {
         value = player;
     };
@@ -159,6 +159,11 @@ function gameController(
         console.log(`row = ${row}, column =${column}`);
         console.log('activeplayer');
         console.log(getActivePlayer());
+        console.log(`value of the cell is ${boardHere[row][column].getValue()}`);
+
+        if(boardHere[row][column].getValue() !== '') {
+            return;
+        }
         board.placeToken(row, column, getActivePlayer().token);
 
         if(checkWin()) {
@@ -261,6 +266,7 @@ function ScreenController() {
             });
         });
     };
+    let clickedButton;
     function clickHandlerBoard(e) {
         const selectedRow = e.target.dataset.row;
         const selectedColumn = e.target.dataset.column;
@@ -272,8 +278,16 @@ function ScreenController() {
         //what if this cell has already been chosen before?
         //what to do ?
         //why is this cell value not accessible ? 
-
+        //how to access the cell value ? 
+        // clickedButton = e.target;
+        console.log("e.target");
+        console.log(e.target.disabled);
+        console.log(e.target); //for a button already used, it should print disabled true.
+        e.target.disabled = true;
+        console.log("e.target");
+        console.log(e.target);
         console.log(board);
+        console.log(selectedRow, selectedColumn);
         // console.log(board[selectedRow][selectedColumn]);
         // console.log(board[selectedRow][selectedColumn].getValue());
         // console.log(`cell values for ${selectedRow},${selectedColumn} is ${board[selectedRow][selectedColumn].getValue()}`);
@@ -283,9 +297,15 @@ function ScreenController() {
         }
 
         game.playRound(selectedRow,selectedColumn);
+
+        console.log("e.target");
+        console.log(e.target);
         updateScreen();
+        console.log("e.target");
+        console.log(e.target);
     };  
     boardDiv.addEventListener('click', clickHandlerBoard); 
+    // clickedButton.removeEventListener('click', clickHandlerBoard);
 
     updateScreen();
 }
