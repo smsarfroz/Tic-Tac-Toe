@@ -1,26 +1,3 @@
-/*
-Gameboard object has gameboard array
-
-players stored in objects 
-object - to control the flow of the game 
-minimum global code 
-maximum inside factories
-single instance - (gameboard, displayController etc) - wrap the factory 
-inside an IIFE (module pattern) so it cannot be reused to create additional instances.
-
-so, how to start this project ? well, how would project look like ? 
-
-each cell is a button
-factory is used to create multiple objects - so I can make one for creating
-player1 and player2 
-gameboard array has 6 button elements
-and they will be arranged in some manner. 
-like first three in 1st row
-then next three in 2nd row
-then next three in 3rd row 
-and then what ? 
-
-*/
 
 function Gameboard(){
     const rows = 3;
@@ -221,11 +198,6 @@ function gameController(
 }
 
 function ScreenController() {
-    //what things do I have to do here ? 
-    //I have to keep showing the which person's turn it is
-    //and then what ? 
-    //is screenController totally separate from the need of css and board clickable buttons ? 
-    //what to do ? 
     const game = gameController();
     console.log("game");
     console.log(game);
@@ -243,21 +215,8 @@ function ScreenController() {
 
         board.forEach((row,index1) => {
             row.forEach((cell, index2) => {
-                //what is (cell,index) ?
-                //index was only set for column in previous project
-                //but here we have both row and column, so what to do
-                //users gives those input
-                //were they stored in the cell ? yes they were. where?
-                //why did we set column as index ?
-                //actually it can only be (cell,index) and nothing else
-                //like (cell,row,column) is not possible
-                //what is index here ? 
                 const cellButton = document.createElement("button");
                 cellButton.classList.add("cell");
-                //wouldn't we set the cell's dimension or something ? 
-                //or just store those values of dimension somewhere in it?
-                //but how is that an indeal cell ?
-                //is it necessary to store values of column and row in the cell ? 
 
                 cellButton.dataset.row = index1;
                 cellButton.dataset.column = index2;
@@ -266,20 +225,12 @@ function ScreenController() {
             });
         });
     };
-    let clickedButton;
     function clickHandlerBoard(e) {
         const selectedRow = e.target.dataset.row;
         const selectedColumn = e.target.dataset.column;
 
         console.log(`button was clicked on ${selectedRow} , ${selectedColumn}`);
-        //why are selectedRow, selectedColumn undefined now ? 
-        //cuz maybe I didn't set their values correctly.
 
-        //what if this cell has already been chosen before?
-        //what to do ?
-        //why is this cell value not accessible ? 
-        //how to access the cell value ? 
-        // clickedButton = e.target;
         console.log("e.target");
         console.log(e.target.disabled);
         console.log(e.target); //for a button already used, it should print disabled true.
@@ -288,10 +239,6 @@ function ScreenController() {
         console.log(e.target);
         console.log(board);
         console.log(selectedRow, selectedColumn);
-        // console.log(board[selectedRow][selectedColumn]);
-        // console.log(board[selectedRow][selectedColumn].getValue());
-        // console.log(`cell values for ${selectedRow},${selectedColumn} is ${board[selectedRow][selectedColumn].getValue()}`);
-        //|| board[selectedRow][selectedColumn].getValue()!=0
         if(!selectedColumn || !selectedRow ) {
             return;
         }
@@ -305,7 +252,6 @@ function ScreenController() {
         console.log(e.target);
     };  
     boardDiv.addEventListener('click', clickHandlerBoard); 
-    // clickedButton.removeEventListener('click', clickHandlerBoard);
 
     updateScreen();
 }
