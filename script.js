@@ -1,12 +1,12 @@
 
-function Gameboard(){
+function Gameboard() {
     const rows = 3;
     const columns = 3;
     const board = [];
 
-    for(let i =0 ;i <3; ++i) {
+    for (let i = 0; i < 3; ++i) {
         board[i] = [];
-        for(let j =0 ;j<3; ++j) {
+        for (let j = 0; j < 3; ++j) {
             board[i].push(Cell());
         }
     }
@@ -16,22 +16,22 @@ function Gameboard(){
     };
 
     const resetBoard = () => {
-        for(let i =0 ;i<rows ;++i) {
-            for(let j =0;j<columns; ++j) {
+        for (let i = 0; i < rows; ++i) {
+            for (let j = 0; j < columns; ++j) {
                 board[i][j].addToken('');
             }
         }
     };
 
     const printBoard = () => {
-        console.log(board); 
+        console.log(board);
     }
 
     const placeToken = (row, column, player) => {
         board[row][column].addToken(player);
     };
 
-    return {getBoard, resetBoard, printBoard, placeToken};
+    return { getBoard, resetBoard, printBoard, placeToken };
 }
 
 function Cell() {
@@ -44,8 +44,8 @@ function Cell() {
         return value;
     };
 
-    return {addToken, getValue};
-}   
+    return { addToken, getValue };
+}
 
 function gameController(
     playerOneName = player1Name.value,
@@ -67,12 +67,12 @@ function gameController(
     let activePlayer = players[0];
 
     const switchPlayerTurn = () => {
-        activePlayer = (activePlayer === players[0] ? players[1]: players[0]);
+        activePlayer = (activePlayer === players[0] ? players[1] : players[0]);
     };
     const getActivePlayer = () => {
         return activePlayer;
     };
-    
+
     const printNewRound = () => {
         board.printBoard();
     };
@@ -82,15 +82,15 @@ function gameController(
     const checkWin = () => {
         //horizontal 
         //iterate first column
-        for(let i=0;i<3;++i){
+        for (let i = 0; i < 3; ++i) {
             const typeHere = boardHere[i][0].getValue();
             let timesRepeated = 0;
-            for(let j=0;j<3; ++j) {
-                if(boardHere[i][j].getValue() === typeHere) {
+            for (let j = 0; j < 3; ++j) {
+                if (boardHere[i][j].getValue() === typeHere) {
                     timesRepeated++;
                 }
             }
-            if(timesRepeated === 3 && typeHere!=''){
+            if (timesRepeated === 3 && typeHere != '') {
                 return true;
             }
         }
@@ -98,16 +98,16 @@ function gameController(
         //vertical
         //iterate first row
 
-        for(let j=0;j<3;++j) {
+        for (let j = 0; j < 3; ++j) {
             const typeHere = boardHere[0][j].getValue();
             let timesRepeated = 0;
-            for(let i=0;i<3;++i) {
-                if(boardHere[i][j].getValue() === typeHere) {
+            for (let i = 0; i < 3; ++i) {
+                if (boardHere[i][j].getValue() === typeHere) {
                     timesRepeated++;
                 }
             }
 
-            if(timesRepeated === 3 && typeHere!='') {
+            if (timesRepeated === 3 && typeHere != '') {
                 return true;
             }
         }
@@ -115,16 +115,16 @@ function gameController(
         //diagonals 
 
         {
-            if(boardHere[0][0].getValue() === boardHere[1][1].getValue()){
-                if(boardHere[1][1].getValue() === boardHere[2][2].getValue() && boardHere[2][2].getValue()!=''){
+            if (boardHere[0][0].getValue() === boardHere[1][1].getValue()) {
+                if (boardHere[1][1].getValue() === boardHere[2][2].getValue() && boardHere[2][2].getValue() != '') {
                     return true;
                 }
             }
         }
 
         {
-            if(boardHere[2][0].getValue() === boardHere[1][1].getValue()){
-                if(boardHere[1][1].getValue() === boardHere[0][2].getValue() && boardHere[0][2].getValue()!=''){
+            if (boardHere[2][0].getValue() === boardHere[1][1].getValue()) {
+                if (boardHere[1][1].getValue() === boardHere[0][2].getValue() && boardHere[0][2].getValue() != '') {
                     return true;
                 }
             }
@@ -138,12 +138,12 @@ function gameController(
         console.log(getActivePlayer());
         console.log(`value of the cell is ${boardHere[row][column].getValue()}`);
 
-        if(boardHere[row][column].getValue() !== '') {
+        if (boardHere[row][column].getValue() !== '') {
             return;
         }
         board.placeToken(row, column, getActivePlayer().token);
 
-        if(checkWin()) {
+        if (checkWin()) {
             console.log(`${getActivePlayer().name} has won the round.`);
             const winnerMessage = document.querySelector(".winnerSection");
             winnerMessage.textContent = `${getActivePlayer().name} has won this round.`
@@ -161,21 +161,38 @@ function gameController(
 
             button.removeEventListener('click', handlePlayAgain);
             button.addEventListener('click', handlePlayAgain);
-        }else {
+        } else {
             //check for tie condition
 
-            const winnerDialogue = document.querySelector('#winner');
 
             let emptyCells = 0;
-            for(let i=0;i<3;++i){
-                for(let j=0;j<3;++j){
-                    if(boardHere[i][j].getValue() == ''){
+            for (let i = 0; i < 3; ++i) {
+                for (let j = 0; j < 3; ++j) {
+                    if (boardHere[i][j].getValue() === '') {
                         emptyCells++;
                     }
                 }
-            }   
-            if(emptyCells === 0) {
+            }
+            if (emptyCells === 0) {
                 console.log("It's a tie!");
+
+                const winnerMessage = document.querySelector(".winnerSection");
+                winnerMessage.textContent = `It's a tie!`;
+
+                const button = document.querySelector(".playAgain");
+                const winnerDialogue = document.querySelector("#winner");
+                winnerDialogue.showModal();
+
+                const handlePlayAgain = (e) => {
+                    e.preventDefault();
+                    board.resetBoard();
+                    ScreenController();
+                    winnerDialogue.close();
+                }
+
+                button.removeEventListener('click', handlePlayAgain);
+                button.addEventListener('click', handlePlayAgain);
+
             }
         }
 
@@ -194,7 +211,7 @@ function gameController(
     // playRound(2,0);
     // playRound(2,2);
     // printNewRound();
-    return { playRound, printNewRound, getBoard: board.getBoard, getActivePlayer};
+    return { playRound, printNewRound, getBoard: board.getBoard, getActivePlayer };
 }
 
 function ScreenController() {
@@ -203,11 +220,11 @@ function ScreenController() {
     console.log(game);
     const playerTurnDiv = document.querySelector('.turn');
     const boardDiv = document.querySelector('.board');
-    
-    let blocked =[
-        [0,0,0],
-        [0,0,0],
-        [0,0,0]
+
+    let blocked = [
+        [0, 0, 0],
+        [0, 0, 0],
+        [0, 0, 0]
     ];
     const updateScreen = () => {
 
@@ -218,18 +235,18 @@ function ScreenController() {
 
         playerTurnDiv.textContent = `${activePlayer.name}'s turn...`;
 
-        board.forEach((row,index1) => {
+        board.forEach((row, index1) => {
             row.forEach((cell, index2) => {
                 const cellButton = document.createElement("button");
                 cellButton.classList.add("cell");
 
                 cellButton.dataset.row = index1;
                 cellButton.dataset.column = index2;
-                if(blocked[index1][index2] === 1) {
+                if (blocked[index1][index2] === 1) {
                     cellButton.disabled = true;
-                } 
-                cellButton.textContent = cell.getValue();  
-                boardDiv.appendChild(cellButton);                
+                }
+                cellButton.textContent = cell.getValue();
+                boardDiv.appendChild(cellButton);
             });
         });
     };
@@ -243,15 +260,15 @@ function ScreenController() {
         console.log(blocked[selectedRow][selectedColumn]);
         console.log(board);
         console.log(selectedRow, selectedColumn);
-        if(!selectedColumn || !selectedRow ) {
+        if (!selectedColumn || !selectedRow) {
             return;
         }
 
-        game.playRound(selectedRow,selectedColumn);
+        game.playRound(selectedRow, selectedColumn);
 
         updateScreen();
-    };  
-    boardDiv.addEventListener('click', clickHandlerBoard); 
+    };
+    boardDiv.addEventListener('click', clickHandlerBoard);
 
     updateScreen();
 }
@@ -261,18 +278,18 @@ const player2Name = document.getElementById("player_2");
 const board = document.querySelector(".board");
 
 function takeDetailsStartGame() {
-  board.style.display = 'none';
+    board.style.display = 'none';
 
-  const button = document.getElementById("play");
-  button.addEventListener('click',(e) =>{
-    e.preventDefault();
-    
-    const mydialog = document.querySelector("dialog");
-    mydialog.close();
+    const button = document.getElementById("play");
+    button.addEventListener('click', (e) => {
+        e.preventDefault();
 
-    ScreenController();
-    board.style.display = 'grid';
-  });
+        const mydialog = document.querySelector("dialog");
+        mydialog.close();
+
+        ScreenController();
+        board.style.display = 'grid';
+    });
 }
 
 takeDetailsStartGame();
