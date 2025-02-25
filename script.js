@@ -204,6 +204,11 @@ function ScreenController() {
     const playerTurnDiv = document.querySelector('.turn');
     const boardDiv = document.querySelector('.board');
     
+    let blocked =[
+        [0,0,0],
+        [0,0,0],
+        [0,0,0]
+    ];
     const updateScreen = () => {
 
         boardDiv.textContent = "";
@@ -220,7 +225,10 @@ function ScreenController() {
 
                 cellButton.dataset.row = index1;
                 cellButton.dataset.column = index2;
-                cellButton.textContent = cell.getValue();
+                if(blocked[index1][index2] === 1) {
+                    cellButton.disabled = true;
+                } 
+                cellButton.textContent = cell.getValue();  
                 boardDiv.appendChild(cellButton);                
             });
         });
@@ -231,12 +239,8 @@ function ScreenController() {
 
         console.log(`button was clicked on ${selectedRow} , ${selectedColumn}`);
 
-        console.log("e.target");
-        console.log(e.target.disabled);
-        console.log(e.target); //for a button already used, it should print disabled true.
-        e.target.disabled = true;
-        console.log("e.target");
-        console.log(e.target);
+        blocked[selectedRow][selectedColumn] = 1;
+        console.log(blocked[selectedRow][selectedColumn]);
         console.log(board);
         console.log(selectedRow, selectedColumn);
         if(!selectedColumn || !selectedRow ) {
@@ -245,11 +249,7 @@ function ScreenController() {
 
         game.playRound(selectedRow,selectedColumn);
 
-        console.log("e.target");
-        console.log(e.target);
         updateScreen();
-        console.log("e.target");
-        console.log(e.target);
     };  
     boardDiv.addEventListener('click', clickHandlerBoard); 
 
